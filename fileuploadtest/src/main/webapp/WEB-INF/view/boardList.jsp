@@ -14,14 +14,15 @@
 	<a href="${pageContext.request.contextPath}/addboard">추가</a>
 	<table border="1">
 		<tr>
-			<th>board_no</th>
+			<th>board_id</th>
 			<th>board_title</th>
 			<th>board_file</th>
+			
 		</tr>
 		<c:forEach var="b" items="${boardList}">
 			<tr>
 				<td>${b.boardId}</td>
-				<td>${b.boardTitle}</td>
+				<td><a href="${pageContext.request.contextPath}/boardOne?boardId=${b.boardId}">${b.boardTitle}</a></td>
 				<td>
 					<c:forEach var="bf" items="${b.boardfiles}">
 						
@@ -31,6 +32,7 @@
 						
 					</c:forEach>
 				</td>
+				
 			</tr>
 		</c:forEach>
 	</table>

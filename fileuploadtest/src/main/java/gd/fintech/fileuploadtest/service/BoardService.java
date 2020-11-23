@@ -24,8 +24,73 @@ import gd.fintech.fileuploadtest.vo.Boardfile;
 @Transactional
 public class BoardService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final String PATH ="D:\\Goodee\\sts-git-work\\fileuploadtest\\maven.1606091111218\\fileuploadtest\\src\\main\\webapp\\upload\\";
 	@Autowired BoardMapper boardMapper;
 	@Autowired BoardfileMapper boardfileMapper;
+	
+	public void updateBoard(BoardForm boardForm) {
+		Board board = new Board();
+		board.setBoardTitle(boardForm.getBoardTitle());
+		board.setBoardContent(boardForm.getBoardContent());
+		
+		boardMapper.updateBoard(board);
+		
+		
+		List<Boardfile> boardfile = null;
+		if(boardForm.getBoardfile()!=null) {
+			boardfile = new ArrayList<>();
+			for(MultipartFile mf : boardForm.getBoardfile()) {
+				Boardfile bf = new Boardfile();
+				bf.setBoardfileId(board.getBoardId());
+				int p =mf.getOriginalFilename().lastIndexOf(".");//마지막부터 마지막.까지 자른다
+				String ext =  mf.getOriginalFilename().substring(p).toLowerCase();//확장자 설정 // tolowerCase()소문자로 바꾸기
+				String filename=UUID.randomUUID().toString().replace("-", ""); // 중복되지 않는 문자열이름을 만들기 -는 공백으로 바꾸기
+				
+				bf.setBoardfileName(filename+ext);//중복되지 않는 문자열이름을 만들어야한다.
+				bf.setBoardfileSize(mf.getSize());
+				bf.setBoardfileType(mf.getContentType());
+				
+				boardfile.add(bf);
+				logger.debug("for문"+bf);
+				try {
+				mf.transferTo(new File(PATH+filename+ext));
+				}catch(Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException();
+				}
+			}
+		}
+		
+	}
+	
+	public void removeBoardFile(int boardfileId) {
+		String boardfileName = boardfileMapper.selectBoardFileName(boardfileId);
+		File file = new File(PATH+boardfileName);
+				if(file.exists()) {
+					file.delete();
+				}
+				
+		boardfileMapper.deleteBoardfileByboardfileId(boardfileId);
+		
+	}
+	public Board getBoardFormOne(int boardId) {
+		return boardMapper.selectBoardFormOne(boardId);
+	}
+	
+	public void removeBoard(int boardId) {
+		//1. 게시글을 참조하는 파일들을 삭제
+		List<String> boardfileNameList = boardfileMapper.selectBoardFileNameList(boardId);
+		for(String s: boardfileNameList) {
+			File file = new File(PATH+s);
+			if(file.exists()) {
+				file.delete();
+			}
+		}
+		//2. 게시글을 참조하는 파일테이블 데이터 삭제
+		boardfileMapper.deleteBoardfile(boardId);
+		//3. 게시글 삭제
+		boardMapper.deleteBoard(boardId);
+	}
 	
 	public int getBoardListTotalCount() {
 		return boardMapper.selectBoardListTotalCount(); 
@@ -67,7 +132,7 @@ public class BoardService {
 				boardfile.add(bf);
 				logger.debug("for문"+bf);
 				try {
-				mf.transferTo(new File("D:\\자바\\sts-git-work\\fileuploadtest\\maven.1606091111218\\fileuploadtest\\src\\main\\webapp\\upload\\"+filename+ext));
+				mf.transferTo(new File(PATH+filename+ext));
 				}catch(Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException();

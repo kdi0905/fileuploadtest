@@ -10,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import gd.fintech.fileuploadtest.mapper.BoardfileMapper;
 import gd.fintech.fileuploadtest.service.BoardService;
 import gd.fintech.fileuploadtest.vo.Board;
 import gd.fintech.fileuploadtest.vo.BoardForm;
@@ -18,8 +20,40 @@ import gd.fintech.fileuploadtest.vo.BoardForm;
 @Controller
 public class BoardController {
 	@Autowired BoardService boardService;
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@GetMapping("/deleteFile")
+	public String deleteFile(@RequestParam(name="boardId")int boardId,
+			@RequestParam(name="boardfileId")int boardfileId) {
+		boardService.removeBoardFile(boardfileId);
+		return "redirect:/updateBoard?boardId="+boardId;
+	}
+	@GetMapping("/boardOne")
+	public String boardOne(Model model,@RequestParam(name="boardId") int boardId) {
+		Board boardOne = boardService.getBoardFormOne(boardId);
+		model.addAttribute("boardOne",boardOne);
+		return "boardOne";
+	}
+	@GetMapping("/updateBoard")
+	public String updateBoard(Model model,@RequestParam(name="boardId") int boardId) {
+		Board boardOne = boardService.getBoardFormOne(boardId);
+		model.addAttribute("boardOne",boardOne);
+		return "updateBoard";
+	}
+	
+	@PostMapping("/updateBoard")
+	public String updateBoard(BoardForm boardForm) {
+		
+		return "redirect:/boardOne";
+	}
+	
+	@GetMapping("/removeBoard")
+	public String removeBoard(@RequestParam(name="boardId")int boardId) {
+		boardService.removeBoard(boardId);
+		return "redirect:/boardList/1";
+	}
+	
 	@GetMapping("/boardList/{currentPage}")
 	public String boardList(Model model, @PathVariable(name="currentPage")int currentPage) {
 		//페이징
