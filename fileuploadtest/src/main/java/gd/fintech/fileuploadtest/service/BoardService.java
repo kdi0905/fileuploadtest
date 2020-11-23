@@ -2,7 +2,9 @@ package gd.fintech.fileuploadtest.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -24,6 +26,21 @@ public class BoardService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired BoardMapper boardMapper;
 	@Autowired BoardfileMapper boardfileMapper;
+	
+	public int getBoardListTotalCount() {
+		return boardMapper.selectBoardListTotalCount(); 
+	}
+	
+	public List<Board> getBoardListByPage(int currentPage, int rowPerPage){
+		//페이징 작업
+		int beginRow = (currentPage-1)*rowPerPage;
+		Map<String,Object> Pagemap =new HashMap<>();
+		Pagemap.put("beginRow", beginRow);
+		Pagemap.put("rowPerPage", rowPerPage);
+		List<Board> boardList = boardMapper.selectBoardListByPage(Pagemap);
+		return boardList;
+	}
+	
 	
 	public void addBoard(BoardForm boardForm) {
 		Board board = new Board();
@@ -50,7 +67,7 @@ public class BoardService {
 				boardfile.add(bf);
 				logger.debug("for문"+bf);
 				try {
-				mf.transferTo(new File("D:\\sts-work\\fileuploadtest\\src\\main\\webapp\\upload\\"+filename+ext));
+				mf.transferTo(new File("D:\\자바\\sts-git-work\\fileuploadtest\\maven.1606091111218\\fileuploadtest\\src\\main\\webapp\\upload\\"+filename+ext));
 				}catch(Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException();

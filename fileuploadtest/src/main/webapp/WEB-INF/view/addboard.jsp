@@ -18,7 +18,7 @@ $(document).ready(function(){
 		//fileinput div중에 마지막 자식 지우기
 		$('#fileinput').children().last().remove();
 	});
-
+	
 	$('#submitBtn').click(function(){
 		let ck = true;
 		$('.boardfile').each(function(index, item){

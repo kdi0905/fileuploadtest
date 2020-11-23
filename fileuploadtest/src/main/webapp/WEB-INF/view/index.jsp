@@ -8,6 +8,6 @@
 </head>
 <body>
 	<h1>index</h1>
-	<a href ="${pageContext.request.contextPath }/addboard">추가</a>
+	<a href ="${pageContext.request.contextPath }/boardList/1">boardList</a>
 </body>
 </html>
