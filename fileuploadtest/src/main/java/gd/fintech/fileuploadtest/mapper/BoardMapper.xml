@@ -8,6 +8,7 @@
 		UPDATE board 
 		SET	board_title = #{boardTitle},
 			board_content=#{boardContent}
+		WHERE board_id=#{boardId}
 	</update>  	
   	
   	<delete id="deleteBoard" parameterType="int">

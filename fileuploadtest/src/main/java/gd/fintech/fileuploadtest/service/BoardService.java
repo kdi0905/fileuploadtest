@@ -24,12 +24,13 @@ import gd.fintech.fileuploadtest.vo.Boardfile;
 @Transactional
 public class BoardService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final String PATH ="D:\\Goodee\\sts-git-work\\fileuploadtest\\maven.1606091111218\\fileuploadtest\\src\\main\\webapp\\upload\\";
+	private final String PATH ="D:\\Goodee\\sts-work\\maven.1606121289107\\fileuploadtest\\src\\main\\webapp\\upload\\";
 	@Autowired BoardMapper boardMapper;
 	@Autowired BoardfileMapper boardfileMapper;
 	
 	public void updateBoard(BoardForm boardForm) {
 		Board board = new Board();
+		board.setBoardId(boardForm.getBoardId());
 		board.setBoardTitle(boardForm.getBoardTitle());
 		board.setBoardContent(boardForm.getBoardContent());
 		
@@ -38,10 +39,12 @@ public class BoardService {
 		
 		List<Boardfile> boardfile = null;
 		if(boardForm.getBoardfile()!=null) {
-			boardfile = new ArrayList<>();
+			boardfile = new ArrayList<Boardfile>();
 			for(MultipartFile mf : boardForm.getBoardfile()) {
-				Boardfile bf = new Boardfile();
-				bf.setBoardfileId(board.getBoardId());
+				Boardfile bf= new Boardfile();
+				bf.setBoardId(board.getBoardId());
+				
+				
 				int p =mf.getOriginalFilename().lastIndexOf(".");//마지막부터 마지막.까지 자른다
 				String ext =  mf.getOriginalFilename().substring(p).toLowerCase();//확장자 설정 // tolowerCase()소문자로 바꾸기
 				String filename=UUID.randomUUID().toString().replace("-", ""); // 중복되지 않는 문자열이름을 만들기 -는 공백으로 바꾸기
@@ -59,6 +62,13 @@ public class BoardService {
 					throw new RuntimeException();
 				}
 			}
+		}
+		
+		if(boardfile != null) {
+			for(Boardfile bf : boardfile) {
+				boardfileMapper.insertBoardfile(bf);
+			}
+			
 		}
 		
 	}

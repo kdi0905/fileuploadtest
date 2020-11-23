@@ -44,8 +44,8 @@ public class BoardController {
 	
 	@PostMapping("/updateBoard")
 	public String updateBoard(BoardForm boardForm) {
-		
-		return "redirect:/boardOne";
+		boardService.updateBoard(boardForm);
+		return "redirect:/boardOne?boardId="+boardForm.getBoardId();
 	}
 	
 	@GetMapping("/removeBoard")

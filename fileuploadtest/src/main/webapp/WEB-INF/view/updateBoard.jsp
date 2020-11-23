@@ -47,7 +47,7 @@ $(document).ready(function(){
 	<table border="1">
 		<tr>
 			<td>board_id</td>
-			<td><input type="text" readonly="readonly" value="${boardOne.boardId }" ></td>
+			<td><input type="text" name="boardId" readonly="readonly" value="${boardOne.boardId}" ></td>
 			
 		</tr>
 		<tr>
