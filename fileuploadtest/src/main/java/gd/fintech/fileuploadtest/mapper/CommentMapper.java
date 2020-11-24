@@ -8,4 +8,6 @@ import gd.fintech.fileuploadtest.vo.Comment;
 public interface CommentMapper {
 	int insertComment(Comment comment);
 	int deleteAllComment(int boardId);
+	
+	int deleteComment(int commentId);
 }

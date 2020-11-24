@@ -14,4 +14,8 @@ public class CommentService {
 	public int addComment(Comment comment) {
 		return commentMapper.insertComment(comment);
 	}
+	
+	public int deleteComment(int commentId) {
+		return commentMapper.deleteComment(commentId);
+	}
 }

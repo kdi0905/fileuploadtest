@@ -35,6 +35,9 @@
 							<a href="${pageContext.request.contextPath}/upload/${bf.boardfileName}">${bf.boardfileName}</a>
 						</div>
 					</c:if>	
+					<c:if test="${bf.boardfileName==null}">
+						<div>첨부파일이 없습니다.</div>
+					</c:if>
 				</c:forEach>
 			</td>
 		</tr>
@@ -42,7 +45,11 @@
 		<h3>댓글 목록</h3>
 		<table border="1">
 				<c:forEach var="c" items="${boardOne.commentList }">
-					<div>${c.commentContent }</div>
+					<c:if test="${c.commentContent!=null}">
+					<div>${c.commentContent }
+					 <a href="deleteCommnetOne?boardId=${c.boardId }&commentId=${c.commentId}">x</a>
+					 </div>
+					</c:if>
 				</c:forEach>
 		</table>
 		<form method="post" action="${pageContext.request.contextPath }/addComment">

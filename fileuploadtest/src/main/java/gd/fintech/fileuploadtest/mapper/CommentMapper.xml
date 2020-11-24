@@ -15,4 +15,9 @@
 		DELETE FROM comment
 		WHERE board_id=#{boardId}
 	</delete>
+	
+	<delete id="deleteComment" parameterType="int">
+		DELETE FROM comment
+		where comment_id=#{commentId}
+	</delete>
 </mapper>
