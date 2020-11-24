@@ -10,6 +10,6 @@ public class Board {
 	private String boardTitle;
 	private String boardContent;
 	private List<Boardfile> boardfiles;
-	
+	private List<Comment> commentList;
 	
 }

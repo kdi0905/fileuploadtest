@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import gd.fintech.fileuploadtest.mapper.BoardMapper;
 import gd.fintech.fileuploadtest.mapper.BoardfileMapper;
+import gd.fintech.fileuploadtest.mapper.CommentMapper;
 import gd.fintech.fileuploadtest.vo.Board;
 import gd.fintech.fileuploadtest.vo.BoardForm;
 import gd.fintech.fileuploadtest.vo.Boardfile;
@@ -24,10 +25,10 @@ import gd.fintech.fileuploadtest.vo.Boardfile;
 @Transactional
 public class BoardService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final String PATH ="D:\\Goodee\\sts-work\\maven.1606121289107\\fileuploadtest\\src\\main\\webapp\\upload\\";
+	private final String PATH ="D:\\teststswork\\maven.1606178071707\\fileuploadtest\\src\\main\\webapp\\upload\\";
 	@Autowired BoardMapper boardMapper;
 	@Autowired BoardfileMapper boardfileMapper;
-	
+	@Autowired CommentMapper commentMapper;
 	public void updateBoard(BoardForm boardForm) {
 		Board board = new Board();
 		board.setBoardId(boardForm.getBoardId());
@@ -98,7 +99,9 @@ public class BoardService {
 		}
 		//2. 게시글을 참조하는 파일테이블 데이터 삭제
 		boardfileMapper.deleteBoardfile(boardId);
-		//3. 게시글 삭제
+		//3. 댓글 삭제
+		commentMapper.deleteAllComment(boardId);
+		//4. 게시글 삭제
 		boardMapper.deleteBoard(boardId);
 	}
 	

@@ -26,26 +26,30 @@
 			<td>boardContent</td>
 			<td>${boardOne.boardContent}</td>
 		</tr>
+		<tr>
+			<td>boardfile</td>
+			<td>
+				<c:forEach var="bf" items="${boardOne.boardfiles}">
+					<c:if test="${bf.boardfileName!=null}">
+						<div>
+							<a href="${pageContext.request.contextPath}/upload/${bf.boardfileName}">${bf.boardfileName}</a>
+						</div>
+					</c:if>	
+				</c:forEach>
+			</td>
+		</tr>
 	</table>
-	
-		<c:forEach var="bf" items="${boardOne.boardfiles}">
-			<c:if test="${bf.boardfileName!=null}">
-			<table border ="1">
-				<tr>
-					<td>boardfileName</td>
-					<td>${bf.boardfileName}</td>
-				</tr>
-				<tr>
-					<td>boardfileType</td>
-					<td>${bf.boardfileType}</td>
-				</tr>
-				<tr>
-					<td>boardfileSize</td>
-					<td>${bf.boardfileSize}</td>
-				</tr>
-			</table>	
-			</c:if>	
-		</c:forEach>
+		<h3>댓글 목록</h3>
+		<table border="1">
+				<c:forEach var="c" items="${boardOne.commentList }">
+					<div>${c.commentContent }</div>
+				</c:forEach>
+		</table>
+		<form method="post" action="${pageContext.request.contextPath }/addComment">
+			<input type="hidden" name="boardId" value="${boardOne.boardId}">
+			<textarea name="commentContent" rows="3" cols="50"></textarea>
+			<button type="submit">댓글 추가</button>
+		</form>
 	
 	
 </body>

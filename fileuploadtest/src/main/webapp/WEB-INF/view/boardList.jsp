@@ -16,23 +16,13 @@
 		<tr>
 			<th>board_id</th>
 			<th>board_title</th>
-			<th>board_file</th>
+			
 			
 		</tr>
 		<c:forEach var="b" items="${boardList}">
 			<tr>
 				<td>${b.boardId}</td>
 				<td><a href="${pageContext.request.contextPath}/boardOne?boardId=${b.boardId}">${b.boardTitle}</a></td>
-				<td>
-					<c:forEach var="bf" items="${b.boardfiles}">
-						
-							<div>
-							<a href="${pageContext.request.contextPath}/upload/${bf.boardfileName}">${bf.boardfileName}</a>
-							</div>
-						
-					</c:forEach>
-				</td>
-				
 			</tr>
 		</c:forEach>
 	</table>
